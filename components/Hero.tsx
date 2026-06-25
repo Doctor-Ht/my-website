@@ -23,13 +23,13 @@ export default function Hero() {
         <div className="animate-fade-in animate-delay-3 flex items-center justify-center gap-4">
           <Link
             href="/essays"
-            className="rounded-full bg-[var(--color-text)] px-6 py-3 text-sm font-medium text-white no-underline transition-all hover:bg-black hover:scale-[1.02]"
+            className="rounded-full bg-[var(--color-text)] px-6 py-3 text-sm font-medium text-[var(--color-bg)] no-underline transition-all hover:bg-[var(--color-accent)] hover:text-white hover:scale-[1.02]"
           >
             开始阅读
           </Link>
           <Link
             href="/biology"
-            className="rounded-full bg-[var(--color-bg-secondary)] px-6 py-3 text-sm font-medium text-[var(--color-text)] no-underline transition-all hover:bg-[#e8e8ed] hover:scale-[1.02]"
+            className="rounded-full bg-[var(--color-bg-secondary)] px-6 py-3 text-sm font-medium text-[var(--color-text)] no-underline transition-all hover:bg-[var(--color-accent)] hover:text-white hover:scale-[1.02]"
           >
             探索笔记
           </Link>
