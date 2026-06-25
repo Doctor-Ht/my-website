@@ -94,3 +94,31 @@ export function getAllPosts(): (PostMeta & { section: string })[] {
 export function getPostCount(section: string): number {
   return getPosts(section).length;
 }
+
+export interface Heading {
+  level: number;
+  text: string;
+  id: string;
+}
+
+/**
+ * Extract h2 and h3 headings from MDX content for TOC generation.
+ */
+export function extractHeadings(content: string): Heading[] {
+  const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+  const headings: Heading[] = [];
+  let match;
+
+  while ((match = headingRegex.exec(content)) !== null) {
+    const level = match[1].length;
+    const text = match[2].trim();
+    // Generate a stable ID from the heading text
+    const id = text
+      .toLowerCase()
+      .replace(/[^一-鿿\w\s-]/g, "")
+      .replace(/\s+/g, "-");
+    headings.push({ level, text, id });
+  }
+
+  return headings;
+}
