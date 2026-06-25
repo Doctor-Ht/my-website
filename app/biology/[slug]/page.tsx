@@ -20,7 +20,7 @@ export default async function BiologyPost({ params }: Props) {
   if (!post) notFound();
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16">
+    <div data-section="biology" className="mx-auto max-w-4xl px-4 py-16">
       <Link
         href="/biology"
         className="text-sm text-[var(--color-text-tertiary)] no-underline hover:text-[var(--color-accent)] transition-colors"

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
   { href: "/", label: "首页" },
@@ -20,7 +21,7 @@ export default function Navbar() {
           href="/"
           className="text-lg font-semibold tracking-tight text-[var(--color-text)] no-underline"
         >
-          Zilin&apos;s Space
+          稻听途说
         </Link>
         <div className="flex items-center gap-1">
           {navLinks.map((link) => {
@@ -42,6 +43,7 @@ export default function Navbar() {
               </Link>
             );
           })}
+          <ThemeToggle />
         </div>
       </div>
     </nav>

@@ -30,7 +30,7 @@ export default function CursorGlow() {
       className="fixed pointer-events-none inset-0 z-0"
       style={{
         background: visible
-          ? `radial-gradient(600px at ${pos.x}px ${pos.y}px, rgba(0,113,227,0.06), transparent 60%)`
+          ? `radial-gradient(600px at ${pos.x}px ${pos.y}px, var(--color-accent-glow), transparent 60%)`
           : "transparent",
       }}
     />

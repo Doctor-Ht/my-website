@@ -26,6 +26,116 @@
   --radius-xl: 24px;
 }
 
+/* === Section-specific accent colors === */
+/* Home (default) — Blue */
+:root {
+  --color-accent: #0071e3;
+  --color-accent-hover: #0077ed;
+  --color-accent-glow: rgba(0, 113, 227, 0.15);
+  --color-accent-bg: rgba(0, 113, 227, 0.06);
+}
+
+/* Essays — Warm Amber */
+[data-section="essays"] {
+  --color-accent: #d97706;
+  --color-accent-hover: #e68a00;
+  --color-accent-glow: rgba(217, 119, 6, 0.15);
+  --color-accent-bg: rgba(217, 119, 6, 0.06);
+}
+
+/* Biology — Emerald Green */
+[data-section="biology"] {
+  --color-accent: #059669;
+  --color-accent-hover: #07b87a;
+  --color-accent-glow: rgba(5, 150, 105, 0.15);
+  --color-accent-bg: rgba(5, 150, 105, 0.06);
+}
+
+/* Reading — Indigo Violet */
+[data-section="reading"] {
+  --color-accent: #6366f1;
+  --color-accent-hover: #7878f9;
+  --color-accent-glow: rgba(99, 102, 241, 0.15);
+  --color-accent-bg: rgba(99, 102, 241, 0.06);
+}
+
+/* === Dark Mode === */
+[data-theme="dark"] {
+  --color-bg: #1a1a1c;
+  --color-bg-secondary: #242426;
+  --color-text: #f0f0f2;
+  --color-text-secondary: #9898a0;
+  --color-text-tertiary: #7c7c84;
+  --color-border: #3a3a3d;
+  --color-border-light: #2d2d30;
+  --color-card-bg: #242426;
+  --color-card-shadow: rgba(0, 0, 0, 0.3);
+  --color-card-hover-shadow: rgba(0, 0, 0, 0.5);
+  --color-nav-bg: rgba(26, 26, 28, 0.72);
+  --color-accent-glow: rgba(0, 113, 227, 0.08);
+  --color-accent-bg: rgba(0, 113, 227, 0.04);
+}
+
+[data-theme="dark"][data-section="essays"] {
+  --color-accent-glow: rgba(217, 119, 6, 0.12);
+  --color-accent-bg: rgba(217, 119, 6, 0.05);
+}
+
+[data-theme="dark"][data-section="biology"] {
+  --color-accent-glow: rgba(5, 150, 105, 0.12);
+  --color-accent-bg: rgba(5, 150, 105, 0.05);
+}
+
+[data-theme="dark"][data-section="reading"] {
+  --color-accent-glow: rgba(99, 102, 241, 0.12);
+  --color-accent-bg: rgba(99, 102, 241, 0.05);
+}
+
+/* Dark: hero grid */
+[data-theme="dark"] .hero-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+/* Dark: body texture */
+[data-theme="dark"] body::before {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='0.4' fill='%23ffffff' opacity='0.04'/%3E%3C/svg%3E");
+}
+
+/* Dark: card hover */
+[data-theme="dark"] .card-apple:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* Dark: tag pill */
+[data-theme="dark"] .tag-pill {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-secondary);
+}
+[data-theme="dark"] .tag-pill:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+}
+
+/* Dark: prose code blocks */
+[data-theme="dark"] .prose-apple code {
+  background: rgba(255, 255, 255, 0.08);
+}
+[data-theme="dark"] .prose-apple pre {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Dark: back-to-top button */
+[data-theme="dark"] .back-to-top-btn {
+  background: rgba(36, 36, 38, 0.8);
+}
+
+/* Dark: search dialog */
+[data-theme="dark"] .search-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
+
 /* === Base Styles === */
 html {
   scroll-behavior: smooth;

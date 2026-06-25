@@ -7,16 +7,19 @@ export default function EssaysPage() {
   const posts = getPosts("essays");
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16">
+    <div data-section="essays" className="mx-auto max-w-4xl px-4 py-16">
       <ScrollReveal>
         <div className="mb-12">
+          <div className="h-1 w-16 rounded-full bg-[var(--color-accent)] mb-6" />
           <Link
             href="/"
             className="text-sm text-[var(--color-text-tertiary)] no-underline hover:text-[var(--color-accent)] transition-colors"
           >
             ← 首页
           </Link>
-          <h1 className="mt-4 text-4xl font-bold tracking-tight">随笔杂记</h1>
+          <h1 className="mt-4 text-4xl font-bold tracking-tight">
+            <span className="bg-gradient-to-r from-[var(--color-accent)] to-amber-400 bg-clip-text text-transparent">随笔杂记</span>
+          </h1>
           <p className="mt-3 text-[var(--color-text-secondary)] leading-relaxed">
             日常思考与生活记录，随性而写，随心而记。
           </p>

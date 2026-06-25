@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="mx-auto max-w-5xl px-6 py-10">
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
           <p className="text-sm text-[var(--color-text-secondary)]">
-            © {new Date().getFullYear()} Zilin&apos;s Space. All rights reserved.
+            © {new Date().getFullYear()} 稻听途说. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link
