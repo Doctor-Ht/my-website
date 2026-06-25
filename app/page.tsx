@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import ContentCard from "@/components/ContentCard";
 import ArticleCard from "@/components/ArticleCard";
+import ScrollReveal from "@/components/ScrollReveal";
 import { getAllPosts } from "@/lib/posts";
 
 const sections = [
@@ -38,18 +39,9 @@ export default function Home() {
         </h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {sections.map((section, i) => (
-            <div
-              key={section.href}
-              className={`animate-fade-in ${
-                i === 0
-                  ? "animate-delay-1"
-                  : i === 1
-                  ? "animate-delay-2"
-                  : "animate-delay-3"
-              }`}
-            >
+            <ScrollReveal key={section.href} delay={i * 100}>
               <ContentCard {...section} />
-            </div>
+            </ScrollReveal>
           ))}
         </div>
       </section>
@@ -58,20 +50,23 @@ export default function Home() {
       {recentPosts.length > 0 && (
         <section className="bg-[var(--color-bg-secondary)] py-24">
           <div className="mx-auto max-w-4xl px-4">
-            <h2 className="text-2xl font-semibold text-center mb-12 tracking-tight">
-              最近更新
-            </h2>
+            <ScrollReveal>
+              <h2 className="text-2xl font-semibold text-center mb-12 tracking-tight">
+                最近更新
+              </h2>
+            </ScrollReveal>
             <div className="flex flex-col gap-4">
-              {recentPosts.map((post) => (
-                <ArticleCard
-                  key={`${post.section}/${post.slug}`}
-                  title={post.title}
-                  date={post.date}
-                  description={post.description}
-                  slug={post.slug}
-                  section={post.section as "essays" | "biology" | "reading"}
-                  tags={post.tags}
-                />
+              {recentPosts.map((post, i) => (
+                <ScrollReveal key={`${post.section}/${post.slug}`} delay={i * 80}>
+                  <ArticleCard
+                    title={post.title}
+                    date={post.date}
+                    description={post.description}
+                    slug={post.slug}
+                    section={post.section as "essays" | "biology" | "reading"}
+                    tags={post.tags}
+                  />
+                </ScrollReveal>
               ))}
             </div>
           </div>
