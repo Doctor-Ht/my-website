@@ -56,12 +56,16 @@ export async function GET(req: NextRequest) {
           var openerExists = window.opener && !window.opener.closed;
 
           if (openerExists) {
-            // Decap CMS expects JSON object {token, provider} with EXACT origin
-            var payload = JSON.stringify({
+            // Send raw object (not stringified) — postMessage uses structured clone
+            window.opener.postMessage({
               token: data.token,
               provider: "github"
-            });
-            window.opener.postMessage(payload, window.location.origin);
+            }, window.location.origin);
+            // Also try string format for compatibility
+            window.opener.postMessage(
+              "authorization:github:success:" + data.token,
+              window.location.origin
+            );
             msg.textContent = "已返回编辑器，可关闭此窗口。";
           } else {
             msg.innerHTML = "<b>警告：</b>无法连接到编辑器页面 (window.opener 为 null)。<br><small style='color:#86868b'>可能是弹窗被拦截，请允许弹窗后重试。</small>";
