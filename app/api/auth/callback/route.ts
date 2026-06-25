@@ -53,23 +53,38 @@ export async function GET(req: NextRequest) {
           el.className = "success";
           spinner.style.display = "none";
 
-          var openerExists = window.opener && !window.opener.closed;
+          if (!window.opener || window.opener.closed) {
+            msg.innerHTML = "<b>警告：</b>无法连接到编辑器页面。<br><small>请允许弹窗后重试。</small>";
+            return;
+          }
 
-          if (openerExists) {
-            // Send raw object (not stringified) — postMessage uses structured clone
-            window.opener.postMessage({
-              token: data.token,
-              provider: "github"
-            }, window.location.origin);
-            // Also try string format for compatibility
+          // Step 1: Initiate handshake — send "authorizing:github"
+          msg.textContent = "正在握手...";
+          window.opener.postMessage("authorizing:github", "*");
+
+          // Step 2: Wait for CMS to respond, then send the full auth token
+          var tokenPayload = JSON.stringify({
+            token: data.token,
+            provider: "github"
+          });
+
+          window.addEventListener("message", function handler(e) {
+            // CMS responded — now send the real authorization
             window.opener.postMessage(
-              "authorization:github:success:" + data.token,
-              window.location.origin
+              "authorization:github:success:" + tokenPayload,
+              e.origin
             );
             msg.textContent = "已返回编辑器，可关闭此窗口。";
-          } else {
-            msg.innerHTML = "<b>警告：</b>无法连接到编辑器页面 (window.opener 为 null)。<br><small style='color:#86868b'>可能是弹窗被拦截，请允许弹窗后重试。</small>";
-          }
+            window.removeEventListener("message", handler);
+          });
+
+          // Fallback: also try sending directly after a short delay
+          setTimeout(function() {
+            window.opener.postMessage(
+              "authorization:github:success:" + tokenPayload,
+              window.location.origin
+            );
+          }, 2000);
         } else {
           el.textContent = "授权失败";
           el.className = "error";
