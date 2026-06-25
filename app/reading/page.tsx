@@ -6,7 +6,7 @@ export default function ReadingPage() {
   const posts = getPosts("reading");
 
   return (
-    <div className="mx-auto max-w-3xl px-6 py-16">
+    <div className="mx-auto max-w-4xl px-4 py-16">
       <div className="mb-12">
         <Link
           href="/"

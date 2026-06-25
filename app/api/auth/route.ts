@@ -59,6 +59,8 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json({
         token: tokenData.access_token,
+        provider: "github",
+        backendName: "github",
         user: {
           name: userData.name || userData.login,
           login: userData.login,

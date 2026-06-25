@@ -57,7 +57,7 @@ export default function Home() {
       {/* Recent Posts */}
       {recentPosts.length > 0 && (
         <section className="bg-[var(--color-bg-secondary)] py-24">
-          <div className="mx-auto max-w-3xl px-6">
+          <div className="mx-auto max-w-4xl px-4">
             <h2 className="text-2xl font-semibold text-center mb-12 tracking-tight">
               最近更新
             </h2>

@@ -6,88 +6,87 @@ export async function GET(req: NextRequest) {
 
   if (!code) {
     return new NextResponse(
-      `<!DOCTYPE html><html><body><p>授权失败：缺少授权码</p></body></html>`,
-      { status: 400, headers: { "Content-Type": "text/html" } }
+      `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:system-ui;padding:40px;text-align:center"><h2>授权失败</h2><p>缺少授权码 (code)</p></body></html>`,
+      { status: 400, headers: { "Content-Type": "text/html; charset=utf-8" } }
     );
   }
 
-  // Exchange code for token server-side
-  try {
-    const tokenRes = await fetch(
-      "https://github.com/login/oauth/access_token",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          client_id: process.env.GITHUB_CLIENT_ID,
-          client_secret: process.env.GITHUB_CLIENT_SECRET,
-          code,
-          redirect_uri: process.env.OAUTH_REDIRECT_URI,
-        }),
-      }
-    );
-
-    const tokenData = await tokenRes.json();
-
-    if (tokenData.error) {
-      return new NextResponse(
-        `<!DOCTYPE html><html><body><p>授权失败：${tokenData.error_description || tokenData.error}</p></body></html>`,
-        { status: 400, headers: { "Content-Type": "text/html" } }
-      );
-    }
-
-    // Get user info
-    const userRes = await fetch("https://api.github.com/user", {
-      headers: { Authorization: `Bearer ${tokenData.access_token}` },
-    });
-    const userData = await userRes.json();
-
-    // Post the token and user back to the CMS opener
-    const payload = JSON.stringify({
-      token: tokenData.access_token,
-      provider: "github",
-      backendName: "github",
-      user: {
-        name: userData.name || userData.login,
-        login: userData.login,
-        avatar_url: userData.avatar_url,
-      },
-    });
-
-    return new NextResponse(
-      `<!DOCTYPE html>
-<html>
+  // Render immediately, exchange code via client-side POST
+  return new NextResponse(
+    `<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-  <script>
-    (function() {
-      var payload = ${payload};
-      var origin = window.location.origin;
-      if (window.opener && !window.opener.closed) {
-        window.opener.postMessage(payload, origin);
-      }
-      window.close();
-      // Fallback: if window doesn't close, show a message
-      setTimeout(function() {
-        document.body.innerHTML = '<p>授权成功！窗口即将关闭，请返回编辑器。</p>';
-      }, 1000);
-    })();
-  </script>
+  <meta charset="utf-8">
+  <title>正在完成授权...</title>
+  <style>
+    body { font-family: -apple-system, Segoe UI, PingFang SC, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f5f5f7; }
+    .card { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); text-align: center; max-width: 400px; }
+    .spinner { width: 32px; height: 32px; border: 3px solid #e5e5e5; border-top-color: #0071e3; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 20px auto; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .success { color: #34c759; }
+    .error { color: #ff3b30; }
+  </style>
 </head>
 <body>
-  <p>授权成功！正在返回编辑器...</p>
+  <div class="card">
+    <h2 id="status">正在完成授权...</h2>
+    <div class="spinner" id="spinner"></div>
+    <p id="msg" style="color:#86868b;font-size:14px;"></p>
+  </div>
+  <script>
+    (async function() {
+      var code = "${code}";
+      var el = document.getElementById("status");
+      var msg = document.getElementById("msg");
+      var spinner = document.getElementById("spinner");
+
+      try {
+        var res = await fetch("/api/auth", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ provider: "github", code: code })
+        });
+        var data = await res.json();
+
+        if (data.token) {
+          // Success! Post token to opener
+          el.textContent = "授权成功！";
+          el.className = "success";
+          msg.textContent = "正在跳转到编辑器...";
+          spinner.style.display = "none";
+
+          var payload = {
+            token: data.token,
+            provider: "github",
+            backendName: "github",
+            user: data.user
+          };
+
+          if (window.opener && !window.opener.closed) {
+            window.opener.postMessage(payload, window.location.origin);
+            msg.textContent = "已返回编辑器，可关闭此窗口。";
+          } else {
+            msg.textContent = "授权成功！请返回编辑器页面。窗口即将关闭。";
+            setTimeout(function() { window.close(); }, 2000);
+          }
+        } else {
+          el.textContent = "授权失败";
+          el.className = "error";
+          msg.textContent = data.error || "无法获取访问令牌";
+          spinner.style.display = "none";
+        }
+      } catch (e) {
+        el.textContent = "网络错误";
+        el.className = "error";
+        msg.textContent = e.message;
+        spinner.style.display = "none";
+      }
+    })();
+  </script>
 </body>
 </html>`,
-      {
-        headers: { "Content-Type": "text/html" },
-      }
-    );
-  } catch (error) {
-    return new NextResponse(
-      `<!DOCTYPE html><html><body><p>授权失败：服务器错误</p></body></html>`,
-      { status: 500, headers: { "Content-Type": "text/html" } }
-    );
-  }
+    {
+      headers: { "Content-Type": "text/html; charset=utf-8" },
+    }
+  );
 }

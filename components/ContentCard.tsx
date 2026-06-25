@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CardTilt from "@/components/CardTilt";
 
 interface ContentCardProps {
   title: string;
@@ -16,8 +17,8 @@ export default function ContentCard({
   count,
 }: ContentCardProps) {
   return (
-    <Link href={href} className="no-underline group">
-      <div className="card-apple p-8 h-full flex flex-col">
+    <Link href={href} className="no-underline group block">
+      <CardTilt className="card-apple p-8 h-full flex flex-col">
         <span className="text-4xl mb-5 block">{icon}</span>
         <h3 className="text-xl font-semibold mb-2 text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">
           {title}
@@ -33,7 +34,7 @@ export default function ContentCard({
         <span className="mt-4 inline-flex items-center text-sm font-medium text-[var(--color-accent)] opacity-0 group-hover:opacity-100 transition-opacity">
           浏览 →
         </span>
-      </div>
+      </CardTilt>
     </Link>
   );
 }

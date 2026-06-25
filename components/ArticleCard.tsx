@@ -1,4 +1,5 @@
 import Link from "next/link";
+import CardTilt from "@/components/CardTilt";
 
 interface ArticleCardProps {
   title: string;
@@ -19,7 +20,7 @@ export default function ArticleCard({
 }: ArticleCardProps) {
   return (
     <Link href={`/${section}/${slug}`} className="no-underline group block">
-      <article className="card-apple p-6">
+      <CardTilt className="card-apple p-6" strength={5}>
         <div className="flex items-center gap-3 mb-2">
           <time className="text-xs font-medium text-[var(--color-text-tertiary)]">
             {date}
@@ -40,7 +41,7 @@ export default function ArticleCard({
         <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed line-clamp-2">
           {description}
         </p>
-      </article>
+      </CardTilt>
     </Link>
   );
 }
