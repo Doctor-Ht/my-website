@@ -49,21 +49,31 @@ export async function GET(req: NextRequest) {
         var data = await res.json();
 
         if (data.token) {
-          // Success! Post token to opener
           el.textContent = "授权成功！";
           el.className = "success";
-          msg.textContent = "正在跳转到编辑器...";
           spinner.style.display = "none";
 
-          // Decap CMS expects string format: "authorization:<backend>:success:<token>"
-          var authMsg = "authorization:github:success:" + data.token;
+          var openerExists = window.opener && !window.opener.closed;
 
-          if (window.opener && !window.opener.closed) {
-            window.opener.postMessage(authMsg, "*");
-            msg.textContent = "已返回编辑器，可关闭此窗口。";
+          // Try multiple postMessage formats (Decap CMS may expect different formats)
+          // Format 1: colon-separated string (modern Decap)
+          var msg1 = "authorization:github:success:" + data.token;
+          // Format 2: JSON object (older Netlify CMS)
+          var msg2 = JSON.stringify({
+            token: data.token,
+            provider: "github",
+            backendName: "github"
+          });
+
+          if (openerExists) {
+            // Send both formats to "*" and the specific origin
+            window.opener.postMessage(msg1, "*");
+            window.opener.postMessage(msg2, "*");
+            window.opener.postMessage(msg1, window.location.origin);
+            window.opener.postMessage(msg2, window.location.origin);
+            msg.innerHTML = "已发送授权信息。<br><small style='color:#86868b'>格式1: " + msg1.slice(0, 40) + "...<br>格式2: JSON object<br>请检查编辑器页面是否已刷新。</small>";
           } else {
-            msg.textContent = "授权成功！请返回编辑器页面。窗口即将关闭。";
-            setTimeout(function() { window.close(); }, 2000);
+            msg.innerHTML = "<b>警告：</b>无法连接到编辑器页面 (window.opener 为 null)。<br><small style='color:#86868b'>可能是弹窗被拦截，请允许弹窗后重试。</small>";
           }
         } else {
           el.textContent = "授权失败";
