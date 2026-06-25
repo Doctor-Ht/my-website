@@ -2,8 +2,6 @@ backend:
   name: github
   repo: Doctor-Ht/my-website
   branch: main
-  base_url: https://my-website-delta-umber-26.vercel.app
-  auth_endpoint: api/auth
 
 media_folder: "public/images"
 public_folder: "/images"
