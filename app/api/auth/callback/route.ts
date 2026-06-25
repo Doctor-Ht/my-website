@@ -55,23 +55,14 @@ export async function GET(req: NextRequest) {
 
           var openerExists = window.opener && !window.opener.closed;
 
-          // Try multiple postMessage formats (Decap CMS may expect different formats)
-          // Format 1: colon-separated string (modern Decap)
-          var msg1 = "authorization:github:success:" + data.token;
-          // Format 2: JSON object (older Netlify CMS)
-          var msg2 = JSON.stringify({
-            token: data.token,
-            provider: "github",
-            backendName: "github"
-          });
-
           if (openerExists) {
-            // Send both formats to "*" and the specific origin
-            window.opener.postMessage(msg1, "*");
-            window.opener.postMessage(msg2, "*");
-            window.opener.postMessage(msg1, window.location.origin);
-            window.opener.postMessage(msg2, window.location.origin);
-            msg.innerHTML = "已发送授权信息。<br><small style='color:#86868b'>格式1: " + msg1.slice(0, 40) + "...<br>格式2: JSON object<br>请检查编辑器页面是否已刷新。</small>";
+            // Decap CMS expects JSON object {token, provider} with EXACT origin
+            var payload = JSON.stringify({
+              token: data.token,
+              provider: "github"
+            });
+            window.opener.postMessage(payload, window.location.origin);
+            msg.textContent = "已返回编辑器，可关闭此窗口。";
           } else {
             msg.innerHTML = "<b>警告：</b>无法连接到编辑器页面 (window.opener 为 null)。<br><small style='color:#86868b'>可能是弹窗被拦截，请允许弹窗后重试。</small>";
           }
