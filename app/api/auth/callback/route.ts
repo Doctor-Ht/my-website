@@ -55,15 +55,11 @@ export async function GET(req: NextRequest) {
           msg.textContent = "正在跳转到编辑器...";
           spinner.style.display = "none";
 
-          var payload = {
-            token: data.token,
-            provider: "github",
-            backendName: "github",
-            user: data.user
-          };
+          // Decap CMS expects string format: "authorization:<backend>:success:<token>"
+          var authMsg = "authorization:github:success:" + data.token;
 
           if (window.opener && !window.opener.closed) {
-            window.opener.postMessage(payload, window.location.origin);
+            window.opener.postMessage(authMsg, "*");
             msg.textContent = "已返回编辑器，可关闭此窗口。";
           } else {
             msg.textContent = "授权成功！请返回编辑器页面。窗口即将关闭。";
