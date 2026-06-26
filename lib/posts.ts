@@ -8,10 +8,22 @@ export interface PostMeta {
   date: string;
   description: string;
   tags?: string[];
+  paper?: PaperMeta;
 }
 
 export interface Post extends PostMeta {
   content: string;
+}
+
+/** Paper/book interpretation metadata — optional, only for paper-note posts */
+export interface PaperMeta {
+  authors?: string[];
+  journal?: string;
+  doi?: string;
+  publishedDate?: string;
+  paperUrl?: string;
+  paperType?: "original" | "review" | "preprint" | "perspective";
+  keyFindings?: string[];
 }
 
 const contentRoot = path.join(process.cwd(), "content");
@@ -38,6 +50,7 @@ export function getPosts(section: string): PostMeta[] {
         : "1970-01-01",
       description: data.description || "",
       tags: data.tags || [],
+      paper: extractPaperMeta(data),
     } as PostMeta;
   });
 
@@ -66,6 +79,7 @@ export function getPost(section: string, slug: string): Post | null {
       : "1970-01-01",
     description: data.description || "",
     tags: data.tags || [],
+    paper: extractPaperMeta(data),
     content,
   };
 }
@@ -121,4 +135,35 @@ export function extractHeadings(content: string): Heading[] {
   }
 
   return headings;
+}
+
+/**
+ * Extract paper metadata from frontmatter.
+ * Supports both nested `paper:` and flat top-level keys.
+ */
+function extractPaperMeta(data: Record<string, unknown>): PaperMeta | undefined {
+  const paper = data.paper as Record<string, unknown> | undefined;
+
+  const authors = (paper?.authors || data.authors) as string[] | undefined;
+  const journal = (paper?.journal || data.journal) as string | undefined;
+  const doi = (paper?.doi || data.doi) as string | undefined;
+  const publishedDate = (paper?.publishedDate || data.publishedDate) as string | undefined;
+  const paperUrl = (paper?.paperUrl || data.paperUrl) as string | undefined;
+  const paperType = (paper?.paperType || data.paperType) as PaperMeta["paperType"];
+  const keyFindings = (paper?.keyFindings || data.keyFindings) as string[] | undefined;
+
+  // Only return paper meta if at least one field is present
+  if (authors || journal || doi || publishedDate || paperUrl || paperType || keyFindings) {
+    return {
+      authors: Array.isArray(authors) ? authors : authors ? [authors] : undefined,
+      journal,
+      doi,
+      publishedDate,
+      paperUrl,
+      paperType,
+      keyFindings: Array.isArray(keyFindings) ? keyFindings : keyFindings ? [keyFindings] : undefined,
+    };
+  }
+
+  return undefined;
 }

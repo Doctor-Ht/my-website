@@ -18,7 +18,7 @@ export default function ReadingPage() {
             ← 首页
           </Link>
           <h1 className="mt-4 text-4xl font-bold tracking-tight">
-            <span className="bg-gradient-to-r from-[var(--color-accent)] to-violet-400 bg-clip-text text-transparent">读书笔记</span>
+            <span className="gradient-text">读书笔记</span>
           </h1>
           <p className="mt-3 text-[var(--color-text-secondary)] leading-relaxed">
             读书心得、摘录与书评，阅读是通向世界的窗口。

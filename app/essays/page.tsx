@@ -18,7 +18,7 @@ export default function EssaysPage() {
             ← 首页
           </Link>
           <h1 className="mt-4 text-4xl font-bold tracking-tight">
-            <span className="bg-gradient-to-r from-[var(--color-accent)] to-amber-400 bg-clip-text text-transparent">随笔杂记</span>
+            <span className="gradient-text">随笔杂记</span>
           </h1>
           <p className="mt-3 text-[var(--color-text-secondary)] leading-relaxed">
             日常思考与生活记录，随性而写，随心而记。

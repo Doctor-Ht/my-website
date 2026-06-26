@@ -5,6 +5,7 @@ import MdxRenderer from "@/components/MdxRenderer";
 import ScrollReveal from "@/components/ScrollReveal";
 import TableOfContents from "@/components/TableOfContents";
 import ArticleProgress from "@/components/ArticleProgress";
+import PaperHeader from "@/components/mdx/PaperHeader";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -34,6 +35,9 @@ export default async function BiologyPost({ params }: Props) {
 
       <div className="mt-8 flex gap-12">
         <article className="min-w-0 flex-1">
+          {/* Paper metadata banner */}
+          {post.paper && <PaperHeader paper={post.paper} />}
+
           <ScrollReveal>
             <header className="mb-12">
               <h1 className="text-4xl font-bold tracking-tight mb-4">

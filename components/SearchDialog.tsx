@@ -39,6 +39,9 @@ export default function SearchDialog() {
         if (item.tags.some((t) => t.toLowerCase().includes(q))) score += 50;
         if (item.description.toLowerCase().includes(q)) score += 30;
         if (item.snippet.toLowerCase().includes(q)) score += 10;
+        // Paper fields: authors and journal
+        if (item.authors?.some((a) => a.toLowerCase().includes(q))) score += 40;
+        if (item.journal?.toLowerCase().includes(q)) score += 30;
         return { item, score };
       })
       .filter(({ score }) => score > 0)
@@ -115,11 +118,7 @@ export default function SearchDialog() {
       onClick={() => setOpen(false)}
     >
       <div
-        className="w-full max-w-lg rounded-2xl bg-[var(--color-bg)] border border-[var(--color-border-light)] shadow-2xl overflow-hidden"
-        style={{
-          background: "var(--color-card-bg)",
-          boxShadow: "0 25px 60px rgba(0,0,0,0.2)",
-        }}
+        className="card-glass-strong w-full max-w-lg rounded-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Input */}

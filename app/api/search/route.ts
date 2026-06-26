@@ -14,6 +14,8 @@ export interface SearchResult {
   slug: string;
   date: string;
   snippet: string;
+  authors?: string[];
+  journal?: string;
 }
 
 // Build search index at module level (cached across requests)
@@ -42,6 +44,11 @@ function buildIndex(): SearchResult[] {
         .trim();
       const snippet = plainText.slice(0, 200);
 
+      // Extract paper metadata if present
+      const paper = data.paper as Record<string, unknown> | undefined;
+      const authors = (paper?.authors || data.authors) as string[] | undefined;
+      const journal = (paper?.journal || data.journal) as string | undefined;
+
       results.push({
         title: data.title || "Untitled",
         description: data.description || "",
@@ -52,6 +59,8 @@ function buildIndex(): SearchResult[] {
           ? new Date(data.date).toISOString().slice(0, 10)
           : "1970-01-01",
         snippet,
+        authors: Array.isArray(authors) ? authors : undefined,
+        journal,
       });
     }
   }

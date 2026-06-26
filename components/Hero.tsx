@@ -7,6 +7,7 @@ export default function Hero() {
       <div className="hero-orb" />
       <div className="hero-orb" />
       <div className="hero-orb" />
+      <div className="hero-orb" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--color-bg)] pointer-events-none" />
       <div className="relative z-10">
         <p className="animate-fade-in mb-3 text-sm font-medium tracking-widest uppercase text-[var(--color-text-tertiary)]">

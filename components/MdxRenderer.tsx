@@ -2,6 +2,10 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import Callout from "@/components/mdx/Callout";
 import DefinitionBox from "@/components/mdx/DefinitionBox";
 import ConceptCard from "@/components/mdx/ConceptCard";
+import FigureBlock from "@/components/mdx/FigureBlock";
+import KeyInsight from "@/components/mdx/KeyInsight";
+import MethodsSummary from "@/components/mdx/MethodsSummary";
+import ComparisonTable from "@/components/mdx/ComparisonTable";
 
 interface MdxRendererProps {
   source: string;
@@ -11,6 +15,10 @@ const components = {
   Callout,
   DefinitionBox,
   ConceptCard,
+  FigureBlock,
+  KeyInsight,
+  MethodsSummary,
+  ComparisonTable,
 };
 
 export default function MdxRenderer({ source }: MdxRendererProps) {
