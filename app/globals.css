@@ -468,16 +468,16 @@ body::before {
 
 /* === Biology section: larger prose === */
 [data-section="biology"] .prose-apple {
-  font-size: 1.125rem;
-  max-width: 860px;
+  font-size: 1.25rem;
+  max-width: 900px;
 }
 
 [data-section="biology"] .prose-apple h2 {
-  font-size: 1.875rem;
+  font-size: 2rem;
 }
 
 [data-section="biology"] .prose-apple h3 {
-  font-size: 1.5rem;
+  font-size: 1.625rem;
 }
 
 /* === Drop cap (首字母下沉) === */

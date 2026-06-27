@@ -64,7 +64,7 @@ export default async function BiologyPost({ params }: Props) {
           </ScrollReveal>
         </article>
 
-        <aside className="hidden lg:block w-56 flex-shrink-0">
+        <aside className="hidden lg:block w-64 flex-shrink-0">
           <div className="sticky top-24">
             <TableOfContents headings={headings} />
           </div>

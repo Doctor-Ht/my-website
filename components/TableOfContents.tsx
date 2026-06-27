@@ -42,8 +42,8 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   if (headings.length === 0) return null;
 
   return (
-    <nav className="toc-nav text-sm" aria-label="文章目录">
-      <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-3">
+    <nav className="toc-nav text-[0.9375rem]" aria-label="文章目录">
+      <h4 className="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-3">
         目录
       </h4>
       <ul className="space-y-1.5 border-l-2 border-[var(--color-border-light)]">

@@ -18,8 +18,8 @@ export default function BiologySidebar() {
   };
 
   return (
-    <nav className="text-sm" aria-label="生物学知识导航">
-      <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-3">
+    <nav className="text-[0.9375rem]" aria-label="生物学知识导航">
+      <h4 className="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-3">
         知识体系
       </h4>
       <ul className="space-y-0.5">
@@ -47,7 +47,7 @@ export default function BiologySidebar() {
                   <li key={child.slug}>
                     <a
                       href={`/biology?topic=${child.slug}`}
-                      className="block px-2 py-1 rounded-md text-[var(--color-text-tertiary)] no-underline hover:text-[var(--color-accent)] hover:bg-[var(--color-accent-bg)] transition-colors text-xs"
+                      className="block px-2 py-1 rounded-md text-[var(--color-text-tertiary)] no-underline hover:text-[var(--color-accent)] hover:bg-[var(--color-accent-bg)] transition-colors text-sm"
                     >
                       {child.name}
                     </a>

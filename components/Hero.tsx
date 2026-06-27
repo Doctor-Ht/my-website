@@ -10,7 +10,7 @@ export default function Hero() {
       <div className="hero-orb" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--color-bg)] pointer-events-none" />
       <div className="relative z-10">
-        <h1 className="animate-fade-in mb-6 text-5xl font-bold tracking-[0.15em] sm:text-6xl md:text-7xl bg-gradient-to-br from-[var(--color-text)] via-[var(--color-accent)] to-[#6366f1] bg-clip-text text-transparent">
+        <h1 className="animate-fade-in mb-6 text-5xl font-bold tracking-[0.3em] sm:text-6xl md:text-7xl bg-gradient-to-br from-[var(--color-text)] via-[var(--color-accent)] to-[#6366f1] bg-clip-text text-transparent">
           稻听途说
         </h1>
         <p className="animate-fade-in animate-delay-1 mb-10 max-w-lg mx-auto text-lg text-[var(--color-text-secondary)] leading-relaxed">
