@@ -29,7 +29,7 @@ export default async function BiologyPage({ searchParams }: Props) {
     : null;
 
   return (
-    <div data-section="biology" className="mx-auto max-w-6xl px-4 py-16">
+    <div data-section="biology" className="mx-auto max-w-7xl px-4 py-16">
       <div className="flex gap-12">
         {/* Sidebar */}
         <aside className="hidden lg:block w-52 flex-shrink-0">

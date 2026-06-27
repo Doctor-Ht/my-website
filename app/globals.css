@@ -466,6 +466,20 @@ body::before {
   margin: 2.5em 0;
 }
 
+/* === Biology section: larger prose === */
+[data-section="biology"] .prose-apple {
+  font-size: 1.125rem;
+  max-width: 860px;
+}
+
+[data-section="biology"] .prose-apple h2 {
+  font-size: 1.875rem;
+}
+
+[data-section="biology"] .prose-apple h3 {
+  font-size: 1.5rem;
+}
+
 /* === Drop cap (首字母下沉) === */
 .prose-apple > p:first-of-type::first-letter {
   float: left;

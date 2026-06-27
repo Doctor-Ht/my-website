@@ -25,7 +25,7 @@ export default async function BiologyPost({ params }: Props) {
   const headings = extractHeadings(post.content);
 
   return (
-    <div data-section="biology" className="mx-auto max-w-6xl px-4 py-16">
+    <div data-section="biology" className="mx-auto max-w-7xl px-4 py-16">
       <Link
         href="/biology"
         className="text-sm text-[var(--color-text-tertiary)] no-underline hover:text-[var(--color-accent)] transition-colors"

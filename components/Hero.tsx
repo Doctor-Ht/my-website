@@ -10,18 +10,15 @@ export default function Hero() {
       <div className="hero-orb" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--color-bg)] pointer-events-none" />
       <div className="relative z-10">
-        <p className="animate-fade-in mb-3 text-sm font-medium tracking-widest uppercase text-[var(--color-text-tertiary)]">
-          道听途说
-        </p>
-        <h1 className="animate-fade-in animate-delay-1 mb-6 text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl bg-gradient-to-br from-[var(--color-text)] via-[var(--color-accent)] to-[#6366f1] bg-clip-text text-transparent">
+        <h1 className="animate-fade-in mb-6 text-5xl font-bold tracking-[0.15em] sm:text-6xl md:text-7xl bg-gradient-to-br from-[var(--color-text)] via-[var(--color-accent)] to-[#6366f1] bg-clip-text text-transparent">
           稻听途说
         </h1>
-        <p className="animate-fade-in animate-delay-2 mb-10 max-w-lg mx-auto text-lg text-[var(--color-text-secondary)] leading-relaxed">
+        <p className="animate-fade-in animate-delay-1 mb-10 max-w-lg mx-auto text-lg text-[var(--color-text-secondary)] leading-relaxed">
           道听而途说，德之弃也。然学不可以已。
           <br />
           记录生物学笔记，分享读书心得，写下日常随笔。
         </p>
-        <div className="animate-fade-in animate-delay-3 flex items-center justify-center gap-4">
+        <div className="animate-fade-in animate-delay-2 flex items-center justify-center gap-4">
           <Link
             href="/essays"
             className="rounded-full bg-[var(--color-text)] px-6 py-3 text-sm font-medium text-[var(--color-bg)] no-underline transition-all hover:bg-[var(--color-accent)] hover:text-white hover:scale-[1.02]"

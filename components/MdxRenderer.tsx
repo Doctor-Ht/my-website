@@ -6,6 +6,7 @@ import FigureBlock from "@/components/mdx/FigureBlock";
 import KeyInsight from "@/components/mdx/KeyInsight";
 import MethodsSummary from "@/components/mdx/MethodsSummary";
 import ComparisonTable from "@/components/mdx/ComparisonTable";
+import InfoCard from "@/components/mdx/InfoCard";
 
 interface MdxRendererProps {
   source: string;
@@ -19,6 +20,7 @@ const components = {
   KeyInsight,
   MethodsSummary,
   ComparisonTable,
+  InfoCard,
 };
 
 export default function MdxRenderer({ source }: MdxRendererProps) {

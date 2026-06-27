@@ -2,6 +2,106 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 
+// === Obsidian-flavored MDX preprocessing ===
+
+/**
+ * Preprocess Obsidian-flavored markdown into standard MDX.
+ * Handles: [[wikilinks]], > [!type] callouts
+ */
+export function preprocessObsidian(content: string): string {
+  // 1. Wikilinks: [[Page]] or [[Page|alias]] → search links
+  content = content.replace(
+    /\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]/g,
+    (_: string, page: string, alias: string) => {
+      const label = (alias || page).trim();
+      const query = encodeURIComponent(page.trim());
+      return `[${label}](/search?q=${query})`;
+    }
+  );
+
+  // 2. Obsidian callouts: line-by-line parser for > [!type] blocks
+  content = convertObsidianCallouts(content);
+
+  return content;
+}
+
+/** Convert Obsidian > [!type] callout blocks to <Callout> MDX components */
+function convertObsidianCallouts(content: string): string {
+  const lines = content.split("\n");
+  const out: string[] = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    // Match start of an Obsidian callout: > [!type] Title (type can have +/- fold modifier)
+    const calloutStart = line.match(/^>\s*\[!([a-z]+)\][+-]?\s*(.*)/i);
+
+    if (calloutStart) {
+      const type = calloutStart[1].toLowerCase();
+      const title = calloutStart[2].trim();
+      const bodyLines: string[] = [];
+      i++;
+
+      // Collect subsequent > prefixed lines (the callout body)
+      while (i < lines.length) {
+        const bodyLine = lines[i];
+        if (bodyLine.match(/^>\s?/)) {
+          bodyLines.push(bodyLine.replace(/^>\s?/, ""));
+          i++;
+        } else if (bodyLine.trim() === "") {
+          // Empty line might be part of the callout — check next line
+          // peek: if next non-empty line starts with >, consume this blank too
+          let peek = i + 1;
+          while (peek < lines.length && lines[peek].trim() === "") peek++;
+          if (peek < lines.length && lines[peek].match(/^>\s?/)) {
+            bodyLines.push("");
+            i++;
+          } else {
+            break;
+          }
+        } else {
+          break;
+        }
+      }
+
+      // Map callout type to our component's type prop
+      const typeMap: Record<string, string> = {
+        note: "info",
+        info: "info",
+        warning: "warning",
+        danger: "important",
+        error: "important",
+        tip: "tip",
+        hint: "tip",
+        important: "important",
+        abstract: "info",
+        summary: "info",
+        tldr: "info",
+        todo: "info",
+        success: "tip",
+        question: "info",
+        help: "info",
+        faq: "info",
+        example: "tip",
+        quote: "info",
+        cite: "info",
+      };
+      const mappedType = typeMap[type] || "info";
+
+      const body = bodyLines.join("\n").trim();
+      const titleAttr = title ? ` title="${title}"` : "";
+      out.push(`<Callout type="${mappedType}"${titleAttr}>`);
+      out.push(body);
+      out.push("</Callout>");
+    } else {
+      out.push(line);
+      i++;
+    }
+  }
+
+  return out.join("\n");
+}
+
 export interface PostMeta {
   slug: string;
   title: string;
@@ -54,6 +154,7 @@ export function getPosts(section: string): PostMeta[] {
     } as PostMeta;
   });
 
+  // ponytail: no content preprocessing needed for listing — only metadata used
   posts.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
@@ -80,7 +181,7 @@ export function getPost(section: string, slug: string): Post | null {
     description: data.description || "",
     tags: data.tags || [],
     paper: extractPaperMeta(data),
-    content,
+    content: preprocessObsidian(content),
   };
 }
 
