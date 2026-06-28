@@ -56,9 +56,7 @@ export default async function EssayPost({ params }: Props) {
               </div>
             </header>
           </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <MdxRenderer source={post.content} />
-          </ScrollReveal>
+          <MdxRenderer source={post.content} />
         </article>
 
         {/* TOC sidebar */}

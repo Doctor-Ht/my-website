@@ -55,9 +55,7 @@ export default async function ReadingPost({ params }: Props) {
               </div>
             </header>
           </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <MdxRenderer source={post.content} />
-          </ScrollReveal>
+          <MdxRenderer source={post.content} />
         </article>
 
         <aside className="hidden lg:block w-56 flex-shrink-0">

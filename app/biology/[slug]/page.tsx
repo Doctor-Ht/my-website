@@ -59,9 +59,7 @@ export default async function BiologyPost({ params }: Props) {
               </div>
             </header>
           </ScrollReveal>
-          <ScrollReveal delay={100}>
-            <MdxRenderer source={post.content} />
-          </ScrollReveal>
+          <MdxRenderer source={post.content} />
         </article>
 
         <aside className="hidden lg:block w-64 flex-shrink-0">
