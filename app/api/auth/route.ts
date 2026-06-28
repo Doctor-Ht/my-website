@@ -18,7 +18,33 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(authUrl);
   }
 
-  return NextResponse.json({ error: "Unknown provider" }, { status: 400 });
+  // Token verification: Decap CMS checks existing tokens via GET with Authorization header
+  const authHeader = req.headers.get("authorization");
+  if (authHeader?.startsWith("Bearer ")) {
+    const token = authHeader.slice(7);
+    try {
+      const userRes = await fetch("https://api.github.com/user", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (userRes.ok) {
+        const userData = await userRes.json();
+        return NextResponse.json({
+          token,
+          provider: "github",
+          backendName: "github",
+          user: {
+            name: userData.name || userData.login,
+            login: userData.login,
+            avatar_url: userData.avatar_url,
+          },
+        });
+      }
+    } catch {
+      // token invalid, let it fall through
+    }
+  }
+
+  return NextResponse.json({ error: "No valid token" }, { status: 401 });
 }
 
 export async function POST(req: NextRequest) {
@@ -49,7 +75,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: tokenData.error }, { status: 400 });
       }
 
-      // Get user info
       const userRes = await fetch("https://api.github.com/user", {
         headers: {
           Authorization: `Bearer ${tokenData.access_token}`,
