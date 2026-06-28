@@ -14,6 +14,8 @@ collections:
     label_singular: 随笔
     folder: content/essays
     create: true
+    extension: mdx
+    format: yaml-frontmatter
     slug: "{{slug}}"
     fields:
       - { label: 标题, name: title, widget: string }
@@ -27,6 +29,8 @@ collections:
     label_singular: 生物笔记
     folder: content/biology
     create: true
+    extension: mdx
+    format: yaml-frontmatter
     slug: "{{slug}}"
     fields:
       - { label: 标题, name: title, widget: string }
@@ -40,6 +44,8 @@ collections:
     label_singular: 读书笔记
     folder: content/reading
     create: true
+    extension: mdx
+    format: yaml-frontmatter
     slug: "{{slug}}"
     fields:
       - { label: 标题, name: title, widget: string }
