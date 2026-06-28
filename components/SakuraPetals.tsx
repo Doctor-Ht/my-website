@@ -2,16 +2,16 @@
 
 import { useMemo } from "react";
 
-const PETAL_COUNT = 18;
+const PETAL_COUNT = 40;
 
 export default function SakuraPetals() {
   const petals = useMemo(() => {
     return Array.from({ length: PETAL_COUNT }, (_, i) => ({
       id: i,
       left: `${Math.random() * 100}%`,
-      duration: `${8 + Math.random() * 14}s`,
-      delay: `${Math.random() * 16}s`,
-      scale: 0.6 + Math.random() * 0.8,
+      duration: `${10 + Math.random() * 16}s`,
+      delay: `${Math.random() * 20}s`,
+      scale: 0.35 + Math.random() * 0.45,
     }));
   }, []);
 
