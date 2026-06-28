@@ -135,6 +135,21 @@
   --color-accent-bg: rgba(99, 102, 241, 0.05);
 }
 
+/* Dark: full-page background orbs — subtler */
+[data-theme="dark"] body::after {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, color-mix(in srgb, var(--color-accent) 15%, transparent), transparent 60%),
+    radial-gradient(ellipse 60% 70% at 80% 50%, color-mix(in srgb, var(--color-accent-secondary) 12%, transparent), transparent 55%),
+    radial-gradient(ellipse 50% 50% at 40% 80%, color-mix(in srgb, var(--color-accent-tertiary) 14%, transparent), transparent 50%),
+    radial-gradient(ellipse 40% 40% at 90% 90%, color-mix(in srgb, var(--color-sakura) 10%, transparent), transparent 45%);
+  filter: blur(100px);
+}
+
+/* Dark: body texture */
+[data-theme="dark"] body::before {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='0.4' fill='%23ffffff' opacity='0.03'/%3E%3C/svg%3E");
+}
+
 /* Dark: hero grid */
 [data-theme="dark"] .hero-grid {
   background-image:
@@ -142,14 +157,9 @@
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
 }
 
-/* Dark: body texture */
-[data-theme="dark"] body::before {
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='0.4' fill='%23ffffff' opacity='0.04'/%3E%3C/svg%3E");
-}
-
 /* Dark: card hover */
 [data-theme="dark"] .card-apple:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 12px 32px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 0 0 0.5px rgba(255,255,255,0.12);
 }
 
 /* Dark: tag pill */
@@ -190,6 +200,32 @@ body {
   letter-spacing: -0.01em;
 }
 
+/* === Full-page blurred background orbs === */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 10%, color-mix(in srgb, var(--color-accent) 25%, transparent), transparent 60%),
+    radial-gradient(ellipse 60% 70% at 80% 50%, color-mix(in srgb, var(--color-accent-secondary) 20%, transparent), transparent 55%),
+    radial-gradient(ellipse 50% 50% at 40% 80%, color-mix(in srgb, var(--color-accent-tertiary) 22%, transparent), transparent 50%),
+    radial-gradient(ellipse 40% 40% at 90% 90%, color-mix(in srgb, var(--color-sakura) 18%, transparent), transparent 45%);
+  filter: blur(80px);
+}
+
+/* === Subtle noise texture overlay === */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='0.4' fill='%23000000' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 40px 40px;
+}
+
 /* === Typography === */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
@@ -205,15 +241,14 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 12%, var(--color-border-light));
 }
 
-/* === Card styles === */
+/* === Card styles — liquid glass === */
 .card-apple {
   background: var(--color-card-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
   border: 1px solid var(--color-card-border);
   border-radius: var(--radius-lg);
-  box-shadow: 0 2px 8px var(--color-card-shadow),
-    0 0 0 0.5px rgba(150, 165, 190, 0.35);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(150,165,190,0.35);
   transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
@@ -221,19 +256,17 @@ h1, h2, h3, h4, h5, h6 {
   transform: translateY(-4px);
   background: var(--glass-bg-hover);
   border-color: var(--glass-border-hover);
-  box-shadow: 0 4px 12px var(--color-card-hover-shadow),
-    0 12px 32px var(--color-card-hover-shadow),
-    0 0 0 0.5px rgba(140, 155, 180, 0.55);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.1), 0 0 0 0.5px rgba(140,155,180,0.55);
 }
 
 /* === Glass cards — liquid glassmorphism === */
 .card-glass {
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
   border-radius: var(--radius-lg);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 2px 8px var(--glass-shadow),
+  box-shadow: 0 2px 12px var(--glass-shadow),
     inset 0 1px 0 var(--glass-highlight);
   transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
@@ -241,37 +274,39 @@ h1, h2, h3, h4, h5, h6 {
 .card-glass:hover {
   background: var(--glass-bg-hover);
   border-color: var(--glass-border-hover);
-  box-shadow: 0 8px 24px var(--glass-shadow-hover),
+  box-shadow: 0 8px 28px var(--glass-shadow-hover),
     inset 0 1px 0 var(--glass-highlight);
   transform: translateY(-3px);
 }
 
 .card-glass-strong {
   background: var(--glass-bg-strong);
-  backdrop-filter: blur(var(--glass-blur-strong)) saturate(160%);
-  -webkit-backdrop-filter: blur(var(--glass-blur-strong)) saturate(160%);
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
   border-radius: var(--radius-xl);
   border: 1px solid var(--glass-border);
-  box-shadow: 0 4px 16px var(--glass-shadow),
+  box-shadow: 0 4px 20px var(--glass-shadow),
     inset 0 1px 0 var(--glass-highlight);
 }
 
 .card-glass-accent {
   background: color-mix(in srgb, var(--color-accent) 6%, var(--glass-bg));
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
   border-radius: var(--radius-lg);
-  border: 1px solid color-mix(in srgb, var(--color-accent) 15%, transparent);
-  box-shadow: 0 2px 12px var(--glass-shadow),
-    0 0 40px -20px var(--color-accent-glow);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
+  box-shadow: 0 2px 16px var(--glass-shadow),
+    0 0 50px -20px var(--color-accent-glow),
+    inset 0 1px 0 var(--glass-highlight);
   transition: all 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .card-glass-accent:hover {
   background: color-mix(in srgb, var(--color-accent) 10%, var(--glass-bg-hover));
-  border-color: color-mix(in srgb, var(--color-accent) 25%, transparent);
-  box-shadow: 0 8px 28px var(--glass-shadow-hover),
-    0 0 60px -15px var(--color-accent-glow);
+  border-color: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  box-shadow: 0 8px 32px var(--glass-shadow-hover),
+    0 0 70px -15px var(--color-accent-glow),
+    inset 0 1px 0 var(--glass-highlight);
   transform: translateY(-3px);
 }
 
@@ -370,17 +405,6 @@ h1, h2, h3, h4, h5, h6 {
   25% { transform: translate(30px, -20px) scale(1.05); }
   50% { transform: translate(-15px, 25px) scale(0.95); }
   75% { transform: translate(-25px, -15px) scale(1.03); }
-}
-
-/* === Subtle page texture === */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='30' cy='30' r='0.4' fill='%23000000' opacity='0.06'/%3E%3C/svg%3E");
-  background-size: 40px 40px;
 }
 
 /* === MDX content styles === */
