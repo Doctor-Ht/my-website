@@ -7,12 +7,15 @@ import KeyInsight from "@/components/mdx/KeyInsight";
 import MethodsSummary from "@/components/mdx/MethodsSummary";
 import ComparisonTable from "@/components/mdx/ComparisonTable";
 import InfoCard from "@/components/mdx/InfoCard";
+import { H2, H3 } from "@/components/mdx/Heading";
 
 interface MdxRendererProps {
   source: string;
 }
 
 const components = {
+  h2: H2,
+  h3: H3,
   Callout,
   DefinitionBox,
   ConceptCard,
