@@ -3,6 +3,7 @@
 import ThemeProvider from "@/components/ThemeProvider";
 import CursorGlow from "@/components/CursorGlow";
 import ScrollProgress from "@/components/ScrollProgress";
+import SakuraPetals from "@/components/SakuraPetals";
 import Navbar from "@/components/Navbar";
 import BackToTop from "@/components/BackToTop";
 import Footer from "@/components/Footer";
@@ -12,6 +13,7 @@ import type { ReactNode } from "react";
 export default function AppShell({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
+      <SakuraPetals />
       <CursorGlow />
       <ScrollProgress />
       <Navbar />
