@@ -1,4 +1,5 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import Callout from "@/components/mdx/Callout";
 import DefinitionBox from "@/components/mdx/DefinitionBox";
 import ConceptCard from "@/components/mdx/ConceptCard";
@@ -29,7 +30,15 @@ const components = {
 export default function MdxRenderer({ source }: MdxRendererProps) {
   return (
     <div className="prose-apple" id="article-body">
-      <MDXRemote source={source} components={components} />
+      <MDXRemote
+        source={source}
+        components={components}
+        options={{
+          mdxOptions: {
+            remarkPlugins: [remarkGfm],
+          },
+        }}
+      />
     </div>
   );
 }
