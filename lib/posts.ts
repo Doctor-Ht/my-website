@@ -107,6 +107,7 @@ export interface PostMeta {
   title: string;
   date: string;
   description: string;
+  category?: string;
   tags?: string[];
   paper?: PaperMeta;
 }
@@ -149,6 +150,7 @@ export function getPosts(section: string): PostMeta[] {
         ? new Date(data.date).toISOString().slice(0, 10)
         : "1970-01-01",
       description: data.description || "",
+      category: data.category || undefined,
       tags: data.tags || [],
       paper: extractPaperMeta(data),
     } as PostMeta;
