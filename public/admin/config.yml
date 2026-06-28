@@ -44,6 +44,7 @@ collections:
     fields:
       - { label: 标题, name: title, widget: string }
       - { label: 日期, name: date, widget: datetime, format: YYYY-MM-DD }
+      - { label: 分类, name: category, widget: select, options: ["哲学", "文学", "科学"], default: "文学" }
       - { label: 摘要, name: description, widget: string }
       - { label: 标签, name: tags, widget: list, default: [读书] }
       - { label: 正文, name: body, widget: markdown }
