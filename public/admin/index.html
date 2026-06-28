@@ -1,74 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" translate="no">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="google" content="notranslate" />
   <title>内容管理 | 稻听途说</title>
+  <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
 </head>
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/decap-cms@3.6.1/dist/decap-cms.js"></script>
-  <script>
-    CMS.init({
-      config: {
-        backend: {
-          name: "github",
-          repo: "Doctor-Ht/my-website",
-          branch: "main",
-          base_url: "https://my-website-delta-umber-26.vercel.app",
-          auth_endpoint: "api/auth"
-        },
-        media_folder: "public/images",
-        public_folder: "/images",
-        collections: [
-          {
-            name: "essays",
-            label: "随笔杂记",
-            label_singular: "随笔",
-            folder: "content/essays",
-            create: true,
-            slug: "{{slug}}",
-            fields: [
-              { label: "标题", name: "title", widget: "string" },
-              { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" },
-              { label: "摘要", name: "description", widget: "string" },
-              { label: "标签", name: "tags", widget: "list", default: ["随笔"] },
-              { label: "正文", name: "body", widget: "markdown" }
-            ]
-          },
-          {
-            name: "biology",
-            label: "生物学笔记",
-            label_singular: "生物笔记",
-            folder: "content/biology",
-            create: true,
-            slug: "{{slug}}",
-            fields: [
-              { label: "标题", name: "title", widget: "string" },
-              { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" },
-              { label: "摘要", name: "description", widget: "string" },
-              { label: "标签", name: "tags", widget: "list", default: ["生物学"] },
-              { label: "正文", name: "body", widget: "markdown" }
-            ]
-          },
-          {
-            name: "reading",
-            label: "读书笔记",
-            label_singular: "读书笔记",
-            folder: "content/reading",
-            create: true,
-            slug: "{{slug}}",
-            fields: [
-              { label: "标题", name: "title", widget: "string" },
-              { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" },
-              { label: "分类", name: "category", widget: "select", options: ["哲学", "文学", "科学"], default: "文学" },
-              { label: "摘要", name: "description", widget: "string" },
-              { label: "标签", name: "tags", widget: "list", default: ["读书"] },
-              { label: "正文", name: "body", widget: "markdown" }
-            ]
-          }
-        ]
-      }
-    });
-  </script>
+  <script src="https://unpkg.com/decap-cms@3.6.2/dist/decap-cms.js"></script>
 </body>
 </html>
