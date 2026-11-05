@@ -1,88 +1,90 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import type { SearchResult } from "@/app/api/search/route";
+
+function filterResults(index: SearchResult[], query: string) {
+  const term = query.trim().toLowerCase();
+  if (!term) return index.slice(0, 8);
+
+  return index
+    .map((item) => {
+      let score = 0;
+      if (item.title.toLowerCase().includes(term)) score += 100;
+      if (item.tags.some((tag) => tag.toLowerCase().includes(term))) score += 50;
+      if (item.description.toLowerCase().includes(term)) score += 30;
+      if (item.snippet.toLowerCase().includes(term)) score += 10;
+      if (item.authors?.some((author) => author.toLowerCase().includes(term))) score += 40;
+      if (item.journal?.toLowerCase().includes(term)) score += 30;
+      return { item, score };
+    })
+    .filter(({ score }) => score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 12)
+    .map(({ item }) => item);
+}
 
 export default function SearchDialog() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [allData, setAllData] = useState<SearchResult[]>([]);
+  const [index, setIndex] = useState<SearchResult[] | "error" | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  // Load search index on first open
-  useEffect(() => {
-    if (open && allData.length === 0) {
-      fetch("/api/search")
-        .then((r) => r.json())
-        .then(setAllData)
-        .catch(() => {});
-    }
-  }, [open, allData.length]);
-
-  // Filter results
-  useEffect(() => {
-    if (!query.trim()) {
-      setResults(allData.slice(0, 8));
-      setSelectedIndex(0);
-      return;
-    }
-
-    const q = query.toLowerCase();
-    const scored = allData
-      .map((item) => {
-        let score = 0;
-        if (item.title.toLowerCase().includes(q)) score += 100;
-        if (item.tags.some((t) => t.toLowerCase().includes(q))) score += 50;
-        if (item.description.toLowerCase().includes(q)) score += 30;
-        if (item.snippet.toLowerCase().includes(q)) score += 10;
-        // Paper fields: authors and journal
-        if (item.authors?.some((a) => a.toLowerCase().includes(q))) score += 40;
-        if (item.journal?.toLowerCase().includes(q)) score += 30;
-        return { item, score };
-      })
-      .filter(({ score }) => score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 12)
-      .map(({ item }) => item);
-
-    setResults(scored);
-    setSelectedIndex(0);
-  }, [query, allData]);
-
-  // Keyboard shortcuts
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        setOpen((prev) => !prev);
-      }
-      if (e.key === "Escape") setOpen(false);
-    },
-    []
+  const results = useMemo(
+    () => Array.isArray(index) ? filterResults(index, query) : [],
+    [index, query],
   );
 
-  const handleOpenSearch = useCallback(() => setOpen(true), []);
+  useEffect(() => {
+    if (!open || index !== null) return;
+
+    const request = new AbortController();
+    fetch("/api/search", { signal: request.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("Search index unavailable");
+        const data = await response.json();
+        if (!Array.isArray(data)) throw new Error("Invalid search index");
+        if (!request.signal.aborted) setIndex(data);
+      })
+      .catch(() => {
+        if (!request.signal.aborted) setIndex("error");
+      });
+
+    return () => request.abort();
+  }, [open, index]);
+
+  const handleOpenSearch = useCallback(() => {
+    setQuery("");
+    setSelectedIndex(0);
+    setIndex((previous) => previous === "error" ? null : previous);
+    setOpen(true);
+  }, []);
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.isComposing) return;
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        if (open) setOpen(false);
+        else handleOpenSearch();
+      }
+      if (e.key === "Escape") setOpen(false);
+    };
+
     document.addEventListener("keydown", handleKeyDown);
     window.addEventListener("open-search", handleOpenSearch);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("open-search", handleOpenSearch);
     };
-  }, [handleKeyDown, handleOpenSearch]);
+  }, [open, handleOpenSearch]);
 
   // Focus input when opened
   useEffect(() => {
-    if (open) {
-      setTimeout(() => inputRef.current?.focus(), 50);
-      setQuery("");
-      setSelectedIndex(0);
-    }
+    if (open) inputRef.current?.focus();
   }, [open]);
 
   const navigate = (slug: string, section: string) => {
@@ -91,7 +93,9 @@ export default function SearchDialog() {
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowDown") {
+    if (e.nativeEvent.isComposing) return;
+
+    if (e.key === "ArrowDown" && results.length > 0) {
       e.preventDefault();
       setSelectedIndex((i) => Math.min(i + 1, results.length - 1));
     } else if (e.key === "ArrowUp") {
@@ -118,6 +122,8 @@ export default function SearchDialog() {
       onClick={() => setOpen(false)}
     >
       <div
+        role="dialog"
+        aria-label="站内搜索"
         className="card-glass-strong w-full max-w-lg rounded-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
@@ -137,7 +143,11 @@ export default function SearchDialog() {
             ref={inputRef}
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            aria-label="搜索文章"
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setSelectedIndex(0);
+            }}
             onKeyDown={handleInputKeyDown}
             placeholder="搜索文章..."
             className="flex-1 py-3.5 bg-transparent text-[var(--color-text)] outline-none text-sm placeholder:text-[var(--color-text-tertiary)]"
@@ -149,9 +159,16 @@ export default function SearchDialog() {
 
         {/* Results */}
         <div className="max-h-80 overflow-y-auto py-2">
-          {results.length === 0 ? (
-            <p className="text-center py-8 text-sm text-[var(--color-text-tertiary)]">
-              {allData.length === 0 ? "加载中..." : "没有找到相关文章"}
+          {index === "error" ? (
+            <div className="py-8 text-center text-sm text-[var(--color-text-secondary)]">
+              <p role="status">无法加载搜索索引</p>
+              <button type="button" className="mt-2 underline" onClick={() => setIndex(null)}>
+                重试
+              </button>
+            </div>
+          ) : results.length === 0 ? (
+            <p role="status" className="text-center py-8 text-sm text-[var(--color-text-tertiary)]">
+              {index === null ? "加载中..." : "没有找到相关文章"}
             </p>
           ) : (
             results.map((item, i) => (

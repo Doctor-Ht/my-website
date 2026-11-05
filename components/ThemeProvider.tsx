@@ -1,8 +1,10 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useSyncExternalStore, type ReactNode } from "react";
 
 type Theme = "light" | "dark";
+const darkPreference = "(prefers-color-scheme: dark)";
+let sessionTheme: Theme | undefined;
 
 interface ThemeContextType {
   theme: Theme;
@@ -18,39 +20,46 @@ export function useTheme() {
   return useContext(ThemeContext);
 }
 
+function readTheme(): Theme {
+  if (sessionTheme) return sessionTheme;
+  try {
+    const stored = localStorage.getItem("theme");
+    if (stored === "light" || stored === "dark") return stored;
+  } catch {
+    // Fall back to the system preference when storage is unavailable.
+  }
+  return window.matchMedia(darkPreference).matches ? "dark" : "light";
+}
+
+function subscribeToTheme(update: () => void) {
+  const media = window.matchMedia(darkPreference);
+  media.addEventListener("change", update);
+  window.addEventListener("storage", update);
+  window.addEventListener("theme-change", update);
+  return () => {
+    media.removeEventListener("change", update);
+    window.removeEventListener("storage", update);
+    window.removeEventListener("theme-change", update);
+  };
+}
+
+function toggleTheme() {
+  const next = readTheme() === "dark" ? "light" : "dark";
+  try {
+    localStorage.setItem("theme", next);
+    sessionTheme = undefined;
+  } catch {
+    sessionTheme = next;
+  }
+  window.dispatchEvent(new Event("theme-change"));
+}
+
 export default function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
-  const [mounted, setMounted] = useState(false);
+  const theme = useSyncExternalStore<Theme>(subscribeToTheme, readTheme, () => "light");
 
   useEffect(() => {
-    setMounted(true);
-    const stored = localStorage.getItem("theme") as Theme | null;
-    if (stored) {
-      setTheme(stored);
-    } else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme, mounted]);
-
-  // Listen for system theme changes
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const handler = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem("theme")) {
-        setTheme(e.matches ? "dark" : "light");
-      }
-    };
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-
-  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+    document.documentElement.dataset.theme = readTheme();
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

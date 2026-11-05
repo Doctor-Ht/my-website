@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Prebuilt third-party bundle.
+    "public/admin/decap-cms.js",
   ]),
 ]);
 

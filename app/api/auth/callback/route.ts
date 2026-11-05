@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const callbackHeaders = {
+  "Content-Type": "text/html; charset=utf-8",
+  "Cache-Control": "no-store",
+  "Referrer-Policy": "no-referrer",
+};
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const code = searchParams.get("code");
@@ -7,7 +13,7 @@ export async function GET(req: NextRequest) {
   if (!code) {
     return new NextResponse(
       `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:system-ui;padding:40px;text-align:center"><h2>授权失败</h2><p>缺少授权码 (code)</p></body></html>`,
-      { status: 400, headers: { "Content-Type": "text/html; charset=utf-8" } }
+      { status: 400, headers: callbackHeaders }
     );
   }
 
@@ -35,7 +41,7 @@ export async function GET(req: NextRequest) {
   </div>
   <script>
     (async function() {
-      var code = "${code}";
+      var code = new URLSearchParams(window.location.search).get("code");
       var el = document.getElementById("status");
       var msg = document.getElementById("msg");
       var spinner = document.getElementById("spinner");
@@ -69,6 +75,7 @@ export async function GET(req: NextRequest) {
           });
 
           window.addEventListener("message", function handler(e) {
+            if (e.source !== window.opener) return;
             // CMS responded — now send the real authorization
             window.opener.postMessage(
               "authorization:github:success:" + tokenPayload,
@@ -102,7 +109,7 @@ export async function GET(req: NextRequest) {
 </body>
 </html>`,
     {
-      headers: { "Content-Type": "text/html; charset=utf-8" },
+      headers: callbackHeaders,
     }
   );
 }

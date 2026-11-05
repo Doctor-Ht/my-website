@@ -2,7 +2,7 @@
 
 一个以阅读、生物学笔记和随笔为主的个人网站。文章以 MDX 保存，和站点代码一起由 Git 管理。站点提供站内搜索、文章目录和深浅两种主题。
 
-[访问网站](https://my-website-doctor-ht1.vercel.app) · [阅读免疫检查点综述解读](https://my-website-doctor-ht1.vercel.app/biology/immune-checkpoint-review)
+[访问网站](https://my-website-delta-umber-26.vercel.app) · [阅读免疫检查点综述解读](https://my-website-delta-umber-26.vercel.app/biology/immune-checkpoint-review)
 
 ## 本地运行
 
@@ -13,7 +13,7 @@ npm ci
 npm run dev
 ```
 
-打开 [本地首页](http://localhost:3000)。使用 `npm run build` 构建生产版本。
+打开 [本地首页](http://localhost:3000)。使用 `npm run lint` 检查源码，使用 `npm run build` 构建生产版本。
 
 ## 内容与代码
 

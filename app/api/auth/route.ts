@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
           avatar_url: userData.avatar_url,
         },
       });
-    } catch (error) {
+    } catch {
       return NextResponse.json({ error: "Auth failed" }, { status: 500 });
     }
   }
