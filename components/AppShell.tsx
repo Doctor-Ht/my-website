@@ -2,7 +2,6 @@
 
 import ThemeProvider from "@/components/ThemeProvider";
 import ScrollProgress from "@/components/ScrollProgress";
-import SakuraPetals from "@/components/SakuraPetals";
 import Navbar from "@/components/Navbar";
 import BackToTop from "@/components/BackToTop";
 import Footer from "@/components/Footer";
@@ -12,7 +11,6 @@ import type { ReactNode } from "react";
 export default function AppShell({ children }: { children: ReactNode }) {
   return (
     <ThemeProvider>
-      <SakuraPetals />
       <ScrollProgress />
       <Navbar />
       <main className="flex-1">{children}</main>

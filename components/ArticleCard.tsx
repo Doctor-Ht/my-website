@@ -21,12 +21,12 @@ export default function ArticleCard({
   return (
     <Link href={`/${section}/${slug}`} className="no-underline group block">
       <CardTilt className="card-apple p-6" strength={5}>
-        <div className="flex items-center gap-3 mb-2">
+        <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1.5">
           <time className="text-xs font-medium text-[var(--color-text-tertiary)]">
             {date}
           </time>
           {tags && tags.length > 0 && (
-            <div className="flex gap-1.5">
+            <div className="flex flex-wrap gap-1.5">
               {tags.map((tag) => (
                 <span key={tag} className="tag-pill">
                   {tag}

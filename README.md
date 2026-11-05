@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 稻听途说
 
-## Getting Started
+一个以阅读、生物学笔记和随笔为主的个人网站。文章以 MDX 保存，和站点代码一起由 Git 管理。站点提供站内搜索、文章目录和深浅两种主题。
 
-First, run the development server:
+[访问网站](https://my-website-doctor-ht1.vercel.app) · [阅读免疫检查点综述解读](https://my-website-doctor-ht1.vercel.app/biology/immune-checkpoint-review)
+
+## 本地运行
+
+需要 Node.js 20.9 或更高版本。
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+打开 [本地首页](http://localhost:3000)。使用 `npm run build` 构建生产版本。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 内容与代码
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| 路径 | 用途 |
+| --- | --- |
+| `content/essays/` | 随笔 |
+| `content/biology/` | 生物学笔记与论文解读 |
+| `content/reading/` | 读书笔记与书评 |
+| `app/` | Next.js App Router 页面和 API |
+| `components/mdx/` | 文章内的图表、概念卡片和提示框 |
 
-## Learn More
+把 `.mdx` 文件放进相应栏目，并在文件开头填写 `title`、`date` 和 `description`。可以参考[现有的生物学笔记](content/biology/immune-checkpoint-review.mdx)中的文章结构和元数据。
 
-To learn more about Next.js, take a look at the following resources:
+## 技术栈
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Next.js App Router、TypeScript、Tailwind CSS 和 MDX。网站部署在 Vercel，内容也可以通过 Decap CMS 编辑。启用 CMS 的 GitHub 登录需要配置 `GITHUB_CLIENT_ID`、`GITHUB_CLIENT_SECRET` 和 `OAUTH_REDIRECT_URI`。

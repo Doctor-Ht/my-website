@@ -5,7 +5,7 @@ interface ContentCardProps {
   title: string;
   description: string;
   href: string;
-  icon: string;
+  label: string;
   count?: number;
 }
 
@@ -13,13 +13,15 @@ export default function ContentCard({
   title,
   description,
   href,
-  icon,
+  label,
   count,
 }: ContentCardProps) {
   return (
-    <Link href={href} className="no-underline group block">
-      <CardTilt className="card-apple p-8 h-full flex flex-col">
-        <span className="text-4xl mb-5 block">{icon}</span>
+    <Link href={href} className="group block h-full rounded-[var(--radius-xl)] no-underline">
+      <CardTilt className="card-apple flex h-full flex-col p-6">
+        <span className="mb-4 font-mono text-xs font-medium tracking-wider text-[var(--color-text-secondary)]" aria-hidden="true">
+          {label}
+        </span>
         <h3 className="text-xl font-semibold mb-2 text-[var(--color-text)] group-hover:text-[var(--color-accent)] transition-colors">
           {title}
         </h3>
@@ -31,7 +33,7 @@ export default function ContentCard({
             {count} 篇文章
           </p>
         )}
-        <span className="mt-4 inline-flex items-center text-sm font-medium text-[var(--color-accent)] opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="mt-4 text-sm font-medium text-[var(--color-text)]" aria-hidden="true">
           浏览 →
         </span>
       </CardTilt>

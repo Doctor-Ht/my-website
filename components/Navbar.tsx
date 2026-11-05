@@ -16,14 +16,14 @@ export default function Navbar() {
 
   return (
     <nav className="nav-blur sticky top-0 z-50 border-b border-[var(--color-border-light)]">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-center gap-y-2 px-6 py-3 sm:flex-nowrap">
         <Link
           href="/"
           className="text-lg font-semibold tracking-tight text-[var(--color-text)] no-underline"
         >
           稻听途说
         </Link>
-        <div className="flex items-center gap-1">
+        <div className="order-last flex basis-full items-center gap-1 sm:order-none sm:ml-auto sm:basis-auto">
           {navLinks.map((link) => {
             const isActive =
               link.href === "/"
@@ -33,7 +33,8 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors no-underline ${
+                aria-current={isActive ? "page" : undefined}
+                className={`rounded-full px-3 py-1.5 text-sm font-medium transition-colors no-underline sm:px-4 ${
                   isActive
                     ? "bg-[var(--color-text)] text-[var(--color-bg)]"
                     : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text)]"
@@ -43,6 +44,8 @@ export default function Navbar() {
               </Link>
             );
           })}
+        </div>
+        <div className="ml-auto flex items-center sm:ml-2">
           <button
             onClick={() => window.dispatchEvent(new CustomEvent("open-search"))}
             aria-label="搜索"
